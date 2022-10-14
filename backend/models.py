@@ -16,12 +16,6 @@ class GenderEnum(enum.Enum):
     other = 'other'
     male = 'male'
 
-class Image(db.Model):
-
-    id = db.Column(db.Integer,primary_key=True)
-    img = db.Column(db.Text,nullable=False)
-    mimetype = db.Column(db.Text,nullable=False)
-    user = db.Column(db.Integer,db.ForeignKey('user.id'))
 
 class Location(db.Model):
     
@@ -43,7 +37,7 @@ class Person(db.Model):
     gender = db.Column(db.Enum(GenderEnum),nullable = True)
     blood_group = db.Column(db.String(4),nullable=False)
     diseases = db.Column(db.String(400))
-    location = db.relationship('Location',backref="use_locationr",uselist=False)
+    user = db.relationship('User',backref="user",uselist=False)
 
 
 
@@ -51,12 +45,13 @@ class User(db.Model,UserMixin):
 
     id = db.Column(db.Integer,primary_key=True)
     email = db.Column(db.String(200),unique=True,nullable=False)
+    phone_number = db.Column(db.String(16),nullable=True)
     aadhar_card_number = db.Column(db.Integer,unique=True,nullable=False) 
     password = db.Column(db.String(16),nullable=False)
-
-    profile_pic = db.relationship('Image',backref="use_picr",uselist=False)
-    location = db.relationship('Location',backref="use_locationr",uselist=False)
     
+    profile_pic = db.Column(db.String(1000),nullable=True)
+    location = db.relationship('Location',backref="user_location",uselist=False)
+    person = db.Column(db.Integer,db.ForeignKey('person.id'))
 
     user_type = db.Column(
             db.Enum(UserTypeEnum),

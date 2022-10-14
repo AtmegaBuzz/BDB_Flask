@@ -4,8 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_marshmallow import Marshmallow
 
-db = SQLAlchemy()
 DB_NAME = "database.db"
+UPLOAD_FOLDER = "static/images"
+db = SQLAlchemy()
 ma = Marshmallow()
 
 def create_app():
@@ -13,6 +14,7 @@ def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "adsdklajer234"
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     db.init_app(app)
 
     from backend.auth import auth 
@@ -25,7 +27,6 @@ def create_app():
     from backend.models import (
         User,
         Person,
-        Image,
         Location,
         UserTypeEnum
     )
