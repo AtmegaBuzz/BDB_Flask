@@ -1,5 +1,5 @@
 import enum
-from backend import db
+from extensions import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
@@ -15,6 +15,16 @@ class GenderEnum(enum.Enum):
     female = 'female'
     other = 'other'
     male = 'male'
+
+class BloodTypeEnum(enum.Enum):
+    a_postive = 'A+'
+    a_negative = 'A-'
+    b_postive = 'B+'
+    b_negative = 'B-'
+    o_postive = 'O+'
+    o_negative = 'O-'
+    ab_postive = 'AB+'
+    ab_negative = 'AB-'
 
 
 class Location(db.Model):
@@ -35,7 +45,7 @@ class Person(db.Model):
     last_name = db.Column(db.String(100),nullable=False)
     dob = db.Column(db.Date)
     gender = db.Column(db.Enum(GenderEnum),nullable = True)
-    blood_group = db.Column(db.String(4),nullable=False)
+    blood_group = db.Column(db.Enum(BloodTypeEnum),nullable=False)
     diseases = db.Column(db.String(400))
     user = db.relationship('User',backref="user",uselist=False)
 

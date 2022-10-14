@@ -1,18 +1,12 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_marshmallow import Marshmallow
-
-DB_NAME = "database.db"
-UPLOAD_FOLDER = "static/images"
-db = SQLAlchemy()
-ma = Marshmallow()
+from extensions import UPLOAD_FOLDER,DB_NAME,SECRET_KEY,db,ma
 
 def create_app():
 
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "adsdklajer234"
+    app.config["SECRET_KEY"] = SECRET_KEY
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     db.init_app(app)

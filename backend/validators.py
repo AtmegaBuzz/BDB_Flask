@@ -1,7 +1,7 @@
 import phonenumbers
 import re
 from backend.models import User,Person,Location
-from backend import ma
+from extensions import ma
 from phonenumbers.phonenumberutil import NumberParseException
 
 
