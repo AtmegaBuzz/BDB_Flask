@@ -12,9 +12,9 @@ def create_app():
     db.init_app(app)
 
     from backend.auth import auth 
-    from backend.views import views
+    from backend.views import person
 
-    app.register_blueprint(views,url_prefix='/')
+    app.register_blueprint(person,url_prefix='/person')
     app.register_blueprint(auth,url_prefix='/auth/')
 
 

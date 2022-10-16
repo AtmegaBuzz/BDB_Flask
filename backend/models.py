@@ -38,19 +38,30 @@ class Location(db.Model):
     pin_code = db.Column(db.String(16),nullable=False)
     user = db.Column(db.Integer,db.ForeignKey('user.id'))
 
-class DonationCamp(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
-    title = db.Column(db.String(150))
-    description = db.Column(db.String(1000))
-    organization = db.Column(db.Integer,db.ForeignKey('organization.id'),uselist=False)
-    people_attending = db.Column(db.Integer,db.ForeignKey('person.id'))
-    location = db.Column(db.Integer,db.ForeignKey('location.id'),uselist=False)
+    def values(self):
+
+        return {
+            "id": self.id,
+            "line_1":self.line_1,
+            "line_2":self.line_2,
+            "city":self.city,
+            "country":self.country,
+            "pin_code":self.pin_code
+        }
+
+# class DonationCamp(db.Model):
+#     id = db.Column(db.Integer,primary_key=True)
+#     title = db.Column(db.String(150))
+#     description = db.Column(db.String(1000))
+#     organization = db.Column(db.Integer,db.ForeignKey('organization.id'))
+#     people_attending = db.Column(db.Integer,db.ForeignKey('person.id'))
+#     location = db.Column(db.Integer,db.ForeignKey('location.id'))
 
 class Organization(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(200),nullable=False) 
     camps_organized = db.Column(db.Integer,default=0,nullable=False)
-    user = db.relationship('User',backref="user",uselist=False)
+    user = db.relationship('User',backref="user_organization",uselist=False)
 
 
 class Person(db.Model):
@@ -64,7 +75,19 @@ class Person(db.Model):
     camps_attended = db.Column(db.Integer,default=0,nullable=False)
     saved = db.Column(db.Integer,default=0,nullable=False)
     diseases = db.Column(db.String(400))
-    user = db.relationship('User',backref="user",uselist=False)
+    user = db.relationship('User',backref="user_person",uselist=False)
+
+    def values(self):
+
+        return {
+            "id": self.id,
+            "first_name":self.first_name,
+            "last_name":self.last_name,
+            "dob":self.dob,
+            "gender":self.gender.value,
+            "blood_group":self.blood_group.value,
+            "diseases":self.diseases,
+        }
 
 
 
@@ -79,6 +102,7 @@ class User(db.Model,UserMixin):
     profile_pic = db.Column(db.String(1000),nullable=True)
     location = db.relationship('Location',backref="user_location",uselist=False)
     person = db.Column(db.Integer,db.ForeignKey('person.id'))
+    organization = db.Column(db.Integer,db.ForeignKey('organization.id'))
 
     user_type = db.Column(
             db.Enum(UserTypeEnum),
