@@ -84,3 +84,5 @@ def register_validator(user):
             errors["phone_number"] = "invalid phone_number format"
 
     return errors
+
+

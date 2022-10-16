@@ -1,4 +1,5 @@
 import enum
+from turtle import title
 from extensions import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
@@ -37,6 +38,20 @@ class Location(db.Model):
     pin_code = db.Column(db.String(16),nullable=False)
     user = db.Column(db.Integer,db.ForeignKey('user.id'))
 
+class DonationCamp(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    title = db.Column(db.String(150))
+    description = db.Column(db.String(1000))
+    organization = db.Column(db.Integer,db.ForeignKey('organization.id'),uselist=False)
+    people_attending = db.Column(db.Integer,db.ForeignKey('person.id'))
+    location = db.Column(db.Integer,db.ForeignKey('location.id'),uselist=False)
+
+class Organization(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String(200),nullable=False) 
+    camps_organized = db.Column(db.Integer,default=0,nullable=False)
+    user = db.relationship('User',backref="user",uselist=False)
+
 
 class Person(db.Model):
     
@@ -46,6 +61,8 @@ class Person(db.Model):
     dob = db.Column(db.Date)
     gender = db.Column(db.Enum(GenderEnum),nullable = True)
     blood_group = db.Column(db.Enum(BloodTypeEnum),nullable=False)
+    camps_attended = db.Column(db.Integer,default=0,nullable=False)
+    saved = db.Column(db.Integer,default=0,nullable=False)
     diseases = db.Column(db.String(400))
     user = db.relationship('User',backref="user",uselist=False)
 
